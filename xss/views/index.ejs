@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Comment Board</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    .comment { border: 1px solid #ddd; padding: 12px; margin: 8px 0; border-radius: 4px; }
+    .comment-name { font-weight: bold; color: #333; }
+    .comment-date { font-size: 12px; color: #999; }
+    input, textarea { width: 100%; padding: 8px; margin: 4px 0 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    button { background: #0066cc; color: white; padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer; }
+    .search-result { background: #ffffcc; padding: 8px; margin: 12px 0; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Comment Board</h1>
+
+  <!-- Search: vulnerable to Reflected XSS -->
+  <form method="GET" action="/">
+    <input type="text" name="q" placeholder="Search..." value="<%= search %>">
+    <button type="submit">Search</button>
+  </form>
+  <% if (search) { %>
+    <div class="search-result">
+      Search results for "<%- search %>":
+    </div>
+  <% } %>
+
+  <!-- Comment submission form -->
+  <h2>Post a comment</h2>
+  <form method="POST" action="/comment">
+    <input type="text" name="name" placeholder="Name" required>
+    <textarea name="body" placeholder="Comment" rows="3" required></textarea>
+    <button type="submit">Post</button>
+  </form>
+
+  <!-- Comment list: vulnerable to Stored XSS -->
+  <h2>Comments</h2>
+  <% comments.forEach(function(c) { %>
+    <div class="comment">
+      <span class="comment-name"><%- c.name %></span>
+      <span class="comment-date"><%= c.createdAt %></span>
+      <p><%= c.body %></p>
+    </div>
+  <% }) %>
+
+  <!-- Script vulnerable to DOM-based XSS -->
+  <div id="greeting"></div>
+  <script>
+    const hash = location.hash.substring(1);
+    if (hash) {
+      document.getElementById("greeting").textContent =
+        "Welcome, " + decodeURIComponent(hash) + "!";
+    }
+  </script>
+</body>
+</html>
