@@ -1,0 +1,16 @@
+services:
+  victim:
+    build: ./victim
+    ports:
+      - "4010:4010"
+    volumes:
+      - ./victim:/app
+      - /app/node_modules
+
+  attacker:
+    build: ./attacker
+    ports:
+      - "4011:4011"
+    volumes:
+      - ./attacker:/app
+      - /app/node_modules
