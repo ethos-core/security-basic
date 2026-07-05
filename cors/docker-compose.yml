@@ -1,0 +1,16 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4002:4002"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
