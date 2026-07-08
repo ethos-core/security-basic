@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "4020:4020"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      JWT_SECRET: "my-super-secret-key-for-lab"
+      JWT_REFRESH_SECRET: "my-refresh-secret-key-for-lab"
