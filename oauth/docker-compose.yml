@@ -1,0 +1,28 @@
+services:
+  auth-server:
+    build: ./auth-server
+    ports:
+      - "4040:4040"
+    volumes:
+      - ./auth-server:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  resource-server:
+    build: ./resource-server
+    ports:
+      - "4041:4041"
+    volumes:
+      - ./resource-server:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  spa:
+    build: ./spa
+    ports:
+      - "4042:4042"
+    volumes:
+      - ./spa:/app
+      - /app/node_modules
